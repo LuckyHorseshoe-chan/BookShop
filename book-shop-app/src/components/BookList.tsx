@@ -1,4 +1,5 @@
 import { Flex, Center} from '@chakra-ui/react'
+import Modal from 'react-modal';
 import Book from './Book';
 
 function BookList(){

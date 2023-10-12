@@ -8,10 +8,15 @@ import {
     Select 
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { setSubject, setSort, selectBooks } from '../features/books/booksSlice';
 
 
 function Search(){
-    const categories = ['art', 'biography', 'computers', 'history', 'medical', 'poetry']
+    const categories = ['all', 'art', 'biography', 'computers', 'history', 'medical', 'poetry']
+    const sortTypes = ['relevance', 'newest']
+    const books = useAppSelector(selectBooks);
+    const dispatch = useAppDispatch();
 
     return(
         <Box 
@@ -25,19 +30,28 @@ function Search(){
                     <Text as='b' fontSize='3xl'>Search for books</Text>
                     <HStack m={2} w='30vw'>
                         <Input bg='white' color='black'></Input>
-                        <Button><SearchIcon/></Button>
+                        <Button onClick={() => {console.log({books})}}><SearchIcon/></Button>
                     </HStack>
                     <HStack m={2} w='30vw'>
                         <Text>Categories</Text>
-                        <Select bg='white' color='grey'>
+                        <Select 
+                            bg='white'
+                            color='grey'
+                            onChange={(e: any) => dispatch(setSubject(categories[e.target.value]))}
+                        >
                             {categories.map((category: string, i: number) => (
                                 <option value={i}>{category}</option>
                             ))}
                         </Select>
                         <Text w='9vw'>Sort by</Text>
-                        <Select bg='white' color='grey'>
-                            <option value={0}>relevance</option>
-                            <option value={1}>newest</option>
+                        <Select 
+                            bg='white'
+                            color='grey'
+                            onChange={(e: any) => dispatch(setSort(sortTypes[e.target.value]))}
+                        >
+                            {sortTypes.map((type: string, i: number) => (
+                                <option value={i}>{type}</option>
+                            ))}
                         </Select>
                     </HStack>
                 </VStack>
