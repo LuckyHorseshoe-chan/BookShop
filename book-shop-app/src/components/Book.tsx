@@ -1,4 +1,10 @@
-import { Box, Image, Text, Center, VStack, Button } from '@chakra-ui/react'
+import { 
+    Box, 
+    Image, 
+    Text, 
+    Center, 
+    VStack 
+} from '@chakra-ui/react'
 import { useState } from 'react';
 import Modal from 'react-modal';
 import BookInfo from './BookInfo';

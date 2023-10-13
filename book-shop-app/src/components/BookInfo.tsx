@@ -1,4 +1,10 @@
-import { VStack, HStack, Center, Text, Image } from '@chakra-ui/react'
+import { 
+    VStack, 
+    HStack, 
+    Center, 
+    Text, 
+    Image 
+} from '@chakra-ui/react'
 
 function BookInfo({item}: {item: object}){
     return(
