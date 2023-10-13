@@ -8,15 +8,31 @@ import {
     Select 
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
+import { useState} from 'react'
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { setSubject, setSort, selectBooks } from '../features/books/booksSlice';
+import { 
+    setSubject, 
+    setSort, 
+    selectBooks, 
+    getBooksAsync 
+} from '../features/books/booksSlice';
 
 
 function Search(){
     const categories = ['all', 'art', 'biography', 'computers', 'history', 'medical', 'poetry']
     const sortTypes = ['relevance', 'newest']
+    const [words, setWords] = useState('')
     const books = useAppSelector(selectBooks);
     const dispatch = useAppDispatch();
+
+    const findBooks = () => {
+        console.log(books)
+        let query = 'https://www.googleapis.com/books/v1/volumes?q=' + words.replace(' ', '+')
+        query = books.subject === 'all' ? query : query + '+subject:' +  books.subject
+        query = query + '&orderBy=' + books.sort
+        console.log(query)
+        dispatch(getBooksAsync(query))
+    }
 
     return(
         <Box 
@@ -29,8 +45,13 @@ function Search(){
                 <VStack>
                     <Text as='b' fontSize='3xl'>Search for books</Text>
                     <HStack m={2} w='30vw'>
-                        <Input bg='white' color='black'></Input>
-                        <Button onClick={() => {console.log({books})}}><SearchIcon/></Button>
+                        <Input 
+                            bg='white'
+                            color='black'
+                            onChange={(e: any) => setWords(e.target.value)}
+                            onKeyPress={(e: any) => {if(e.code.toLowerCase() === 'enter') findBooks()}}
+                        ></Input>
+                        <Button onClick={findBooks}><SearchIcon/></Button>
                     </HStack>
                     <HStack m={2} w='30vw'>
                         <Text>Categories</Text>

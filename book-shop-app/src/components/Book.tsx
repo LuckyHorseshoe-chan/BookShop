@@ -1,22 +1,66 @@
-import { Box, Image, Text, Center, VStack } from '@chakra-ui/react'
+import { Box, Image, Text, Center, VStack, Button } from '@chakra-ui/react'
+import { useState } from 'react';
+import Modal from 'react-modal';
+import BookInfo from './BookInfo';
 
-function Book(){
+function Book({item}: {item: object}){
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const openModal = () => {
+        setModalIsOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
+    
     return (
-        <Box 
-            bg='whitesmoke'
-            w='12vw'
-            h='45vh'
-            m='2vh'
-        >
-            <Center m='2vh'>
-                <Image src="http://books.google.com/books/content?id=hJtPEAAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api"/>
-            </Center>
-            <VStack align='stretch' m='1vh'>
-                <Text as='u' color='grey'>Computers</Text>
-                <Text as='b'>node.js node.js node.js node.js node.js</Text>
-                <Text color='grey'>David</Text>
-            </VStack>
-        </Box>
+        <div>
+            {("volumeInfo" in item 
+                && typeof(item["volumeInfo"]) === 'object'
+                && item["volumeInfo"]) ?
+                <a onClick={openModal}>
+                    <Box 
+                    bg='whitesmoke'
+                    w='12vw'
+                    h='45vh'
+                    m='2vh'
+                    >
+                        {("imageLinks" in item["volumeInfo"]
+                            && item["volumeInfo"]["imageLinks"]
+                            && typeof(item["volumeInfo"]["imageLinks"]) === 'object'
+                            && "thumbnail" in item["volumeInfo"]["imageLinks"]
+                            && item["volumeInfo"]["imageLinks"]["thumbnail"]
+                            && typeof(item["volumeInfo"]["imageLinks"]["thumbnail"]) === 'string') ? 
+                        <Center>
+                            <Image m='1vh' src={item["volumeInfo"]["imageLinks"]["thumbnail"]}/>
+                        </Center> :
+                        <span></span>}
+                        <VStack align='stretch' m='1vh'>
+                            {("categories" in item["volumeInfo"]
+                                && item["volumeInfo"]["categories"]
+                                && Array.isArray(item["volumeInfo"]["categories"])
+                                && item["volumeInfo"]["categories"].length) ? 
+                            <Text as='u' color='grey' isTruncated>{item["volumeInfo"]["categories"][0]}</Text>: 
+                            <span></span>}
+                            {("title" in item["volumeInfo"]
+                                && item["volumeInfo"]["title"]
+                                && typeof(item["volumeInfo"]["title"]) === 'string') ? 
+                            <Text as='b' noOfLines={2}>{item["volumeInfo"]["title"]}</Text>:
+                            <span></span>}
+                            {("authors" in item["volumeInfo"]
+                                && item["volumeInfo"]["authors"]
+                                && Array.isArray(item["volumeInfo"]["authors"])) ? 
+                            <Text color='grey' noOfLines={2}>{item["volumeInfo"]["authors"].join(', ')}</Text>:
+                            <span></span>}
+                        </VStack> 
+                    </Box>
+                </a> 
+                : <span></span>}
+            <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+                <BookInfo item={item}/>
+            </Modal>
+        </div> 
     )
 }
 
