@@ -3,14 +3,17 @@ import {
     Center, 
     Text, 
     VStack, 
-    Spinner 
+    Spinner,
+    Button 
 } from '@chakra-ui/react'
+import { useState } from 'react'
 import { useAppSelector } from '../hooks';
 import { selectBooks } from '../features/books/booksSlice';
 import Book from './Book';
 
 function BookList(){
     const books = useAppSelector(selectBooks);
+    const [pagStep, setPagStep] = useState(30); 
 
     return(
         <Center w='60vw'>
@@ -29,10 +32,11 @@ function BookList(){
                             Found {Number(books.value["totalItems"])} results
                         </Text>
                         <Flex flexWrap='wrap' w='95%'>
-                            {books.value["items"].map((item: object) => (
+                            {books.value["items"].slice(0, Math.min(pagStep, books.value["items"].length)).map((item: object) => (
                                 <Book item={item} />
                             ))}
                         </Flex>
+                        <Button onClick={() => {setPagStep(pagStep + 30)}}>Load more</Button>
                     </VStack>
                 }
         </Center>

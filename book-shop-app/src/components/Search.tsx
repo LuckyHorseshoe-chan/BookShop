@@ -8,7 +8,7 @@ import {
     Select 
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
-import { useState} from 'react'
+import { useState } from 'react'
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { 
     setSubject, 
@@ -26,11 +26,9 @@ function Search(){
     const dispatch = useAppDispatch();
 
     const findBooks = () => {
-        console.log(books)
         let query = 'https://www.googleapis.com/books/v1/volumes?q=' + words.replace(' ', '+')
         query = books.subject === 'all' ? query : query + '+subject:' +  books.subject
-        query = query + '&orderBy=' + books.sort
-        console.log(query)
+        query = query + '&orderBy=' + books.sort + '&maxResults=40'
         dispatch(getBooksAsync(query))
     }
 
