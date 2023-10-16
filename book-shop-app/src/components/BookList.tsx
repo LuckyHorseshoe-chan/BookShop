@@ -10,7 +10,7 @@ import { useAppSelector } from '../hooks';
 import { selectBooks } from '../features/books/booksSlice';
 import Book from './Book';
 
-function BookList({pagStep, setPagStep}: {pagStep: number, setPagStep: any}){
+function BookList({itemsToShow, setItemsToShow}: {itemsToShow: number, setItemsToShow: any}){
     const books = useAppSelector(selectBooks);
 
     return(
@@ -30,12 +30,12 @@ function BookList({pagStep, setPagStep}: {pagStep: number, setPagStep: any}){
                             Found {Number(books.value["totalItems"])} results
                         </Text>
                         <Flex flexWrap='wrap' w='95%'>
-                            {books.value["items"].slice(0, Math.min(pagStep, books.value["items"].length)).map((item: object) => (
+                            {books.value["items"].slice(0, Math.min(itemsToShow, books.value["items"].length)).map((item: object) => (
                                 <Book item={item} />
                             ))}
                         </Flex>
-                        {pagStep >= books.value["items"].length ? <span></span> :
-                        <Button onClick={() => {setPagStep(pagStep + 30)}}>Load more</Button>}
+                        {itemsToShow >= books.value["items"].length ? <span></span> :
+                        <Button onClick={() => {setItemsToShow(itemsToShow + 30)}}>Load more</Button>}
                     </VStack>
                 }
         </Center>

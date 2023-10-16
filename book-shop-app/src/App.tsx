@@ -5,13 +5,13 @@ import Search from './components/Search';
 import BookList from './components/BookList';
 
 function App() {
-  const [pagStep, setPagStep] = useState(30);
+  const [itemsToShow, setItemsToShow] = useState(30);
   return (
     <VStack>
-      <Search setPagStep={setPagStep}/>
+      <Search setItemsToShow={setItemsToShow}/>
       <BookList 
-        pagStep={pagStep}
-        setPagStep={setPagStep}/>
+        itemsToShow={itemsToShow}
+        setItemsToShow={setItemsToShow}/>
     </VStack>
   );
 }
