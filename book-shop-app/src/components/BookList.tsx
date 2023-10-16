@@ -6,14 +6,12 @@ import {
     Spinner,
     Button 
 } from '@chakra-ui/react'
-import { useState } from 'react'
 import { useAppSelector } from '../hooks';
 import { selectBooks } from '../features/books/booksSlice';
 import Book from './Book';
 
-function BookList(){
+function BookList({pagStep, setPagStep}: {pagStep: number, setPagStep: any}){
     const books = useAppSelector(selectBooks);
-    const [pagStep, setPagStep] = useState(30); 
 
     return(
         <Center w='60vw'>
@@ -36,7 +34,8 @@ function BookList(){
                                 <Book item={item} />
                             ))}
                         </Flex>
-                        <Button onClick={() => {setPagStep(pagStep + 30)}}>Load more</Button>
+                        {pagStep >= books.value["items"].length ? <span></span> :
+                        <Button onClick={() => {setPagStep(pagStep + 30)}}>Load more</Button>}
                     </VStack>
                 }
         </Center>

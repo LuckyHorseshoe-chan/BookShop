@@ -18,7 +18,7 @@ import {
 } from '../features/books/booksSlice';
 
 
-function Search(){
+function Search({setPagStep}:{setPagStep: any}){
     const categories = ['all', 'art', 'biography', 'computers', 'history', 'medical', 'poetry']
     const sortTypes = ['relevance', 'newest']
     const [words, setWords] = useState('')
@@ -30,6 +30,7 @@ function Search(){
         query = books.subject === 'all' ? query : query + '+subject:' +  books.subject
         query = query + '&orderBy=' + books.sort + '&maxResults=40'
         dispatch(getBooksAsync(query))
+        setPagStep(30)
     }
 
     return(
